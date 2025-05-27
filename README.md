@@ -10,6 +10,7 @@
 1. `Terraform уже установлен проверяю версию`
 
 ![1](https://github.com/Foxbeerxxx/inTerraform/blob/main/img/img1.png)
+
 2. `Смотрю .gitignore`
 ```
 Файл .gitignore исключает:
@@ -67,15 +68,55 @@ Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ![3](https://github.com/Foxbeerxxx/inTerraform/blob/main/img/img3.png)
 
 
-6. 
+6. `Исправленный блок `
 
 ```
-Поле для вставки кода...
-....
-....
-....
-....
+resource "docker_image" "nginx" {  # дописал название
+  name         = "nginx:latest"
+  keep_locally = true
+}
+
+resource "docker_container" "nginx" {
+  image = docker_image.nginx.image_id
+  name  = "example_${random_password.random_string.result}" # Исправлено имя песурса и атребута
+
+  ports {
+    internal = 80
+    external = 9090
+  }
+}
+
+После чего terraform validate показывает, что все успешно.
+
 ```
+![4](https://github.com/Foxbeerxxx/inTerraform/blob/main/img/img4.png)
+
+7. `После terraform init  и terraform apply -и проверяем , что контейнер запустился`
+
+![5](https://github.com/Foxbeerxxx/inTerraform/blob/main/img/img5.png)
+
+8. `Меняю в коде имя контейнера name  = "hello_world" и затем выполняю команду:`
+
+```
+terraform apply  -auto-approve
+Проверяю результат
+```
+![6](https://github.com/Foxbeerxxx/inTerraform/blob/main/img/img6.png)
+
+```
+Опасность ключа -auto-approve автоматически подтверждает изменения без проверки, что может привести к неожиданному удалению или изменению инфраструктуры. Надо ументь пользоваться, а точнее знать когда можно применять.
+
+```
+
+9. `Исправленный блок `
+
+
+
+
+
+
+
+
 
 
 ---
